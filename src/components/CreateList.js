@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
+    paddingBottom: '80px'
   },
   textField: {
     width: "100%",
@@ -36,7 +37,6 @@ export default function CreateList({list, updateList}) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [incorrectData, setIncorrectData] = React.useState('');
-
 
   const onPaste = (event) => {
     const paste = (

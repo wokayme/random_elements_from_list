@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
+    paddingBottom: '80px'
   },
   listElem: {
     margin: '12px 0'
