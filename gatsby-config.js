@@ -4,6 +4,7 @@ module.exports = {
     description: `Create list and get as many elements as you need`,
     author: `@wokayme`,
   },
+  pathPrefix: 'random_elements_from_list',
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
