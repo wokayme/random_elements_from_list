@@ -22,7 +22,7 @@ const Autor = () => {
                     color: `#5e005b`,
                   }}
                   primary="Reason of this project"
-                  secondary="My problem was that I used the same the same hashtags on instagram over and over and because I am laizy I decided to creat this genereator."
+                  secondary="My problem was that I used the same the same hashtags on instagram over and over and because I am laizy I decided to create this genereator."
                 />
               </ListItem>
             </List>
