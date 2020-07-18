@@ -98,6 +98,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginRight: theme.spacing(1),
   },
+  buttonSave: {
+    marginRight: "auto",
+  },
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -116,16 +119,24 @@ export default function Creator() {
   const [selectedNumber, setSelectedNumber] = React.useState(1);
   const steps = getSteps();
 
-  const generateList = ()=>{
-    setGeneratedList([...list].sort(() => Math.random() - 0.5).slice(0, selectedNumber))
-  }
+  const generateList = () => {
+    setGeneratedList(
+      [...list].sort(() => Math.random() - 0.5).slice(0, selectedNumber)
+    );
+  };
 
   const getStepContent = (step) => {
     switch (step) {
       case 0:
         return <CreateList list={list} updateList={setList} />;
       case 1:
-        return <SelectNumber list={list} selectedNumber={selectedNumber} setSelectedNumber={setSelectedNumber} />;
+        return (
+          <SelectNumber
+            list={list}
+            selectedNumber={selectedNumber}
+            setSelectedNumber={setSelectedNumber}
+          />
+        );
       case 2:
         return <ResultList list={generatedList} />;
       default:
@@ -134,7 +145,7 @@ export default function Creator() {
   };
 
   const handleNext = () => {
-    if(activeStep + 2 === steps.length){
+    if (activeStep + 2 === steps.length) {
       generateList();
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -142,6 +153,22 @@ export default function Creator() {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const saveListInLocalStorage = () => {
+    window.localStorage.setItem("savedData", JSON.stringify({ data: list }));
+  };
+
+  const [dataFromLocalStorage, setDataFromLocalStorage] = React.useState(false);
+  React.useEffect(() => {
+    const savedData = window.localStorage.getItem("savedData");
+    if (savedData) {
+      setDataFromLocalStorage(JSON.parse(savedData).data);
+    }
+  }, []);
+
+  const loadListFromLocalStorage = () => {
+    setList(dataFromLocalStorage);
   };
 
   return (
@@ -160,7 +187,7 @@ export default function Creator() {
       <div
         style={{
           margin: "0 auto",
-          width: "800px",
+          maxWidth: "800px",
         }}
       >
         <div>
@@ -175,13 +202,33 @@ export default function Creator() {
         style={{
           top: "auto",
           bottom: 0,
-          background: '#fff',
-          display: 'flex',
-          'justify-content': 'flex-end',
-          flexDirection: 'row',
-          padding: '16px 20px'
+          background: "#fff",
+          display: "flex",
+          "justify-content": "flex-end",
+          flexDirection: "row",
+          padding: "16px 20px",
         }}
       >
+        {activeStep === 0 && (
+          <React.Fragment>
+            {list.length > 0 && (
+              <Button
+                onClick={saveListInLocalStorage}
+                className={classes.buttonSave}
+              >
+                Save your list in browser storage
+              </Button>
+            )}
+            {list.length === 0 && dataFromLocalStorage && (
+              <Button
+                onClick={loadListFromLocalStorage}
+                className={classes.buttonSave}
+              >
+                Load saved list
+              </Button>
+            )}
+          </React.Fragment>
+        )}
         <Button
           disabled={activeStep === 0}
           onClick={handleBack}
@@ -200,7 +247,7 @@ export default function Creator() {
           >
             Next
           </Button>
-        ):(
+        ) : (
           <Button
             variant="contained"
             color="secondary"
